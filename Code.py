@@ -67,9 +67,9 @@ def get_lemmatize(sent):
 
 
 
-clean_data = ReviewProcessing(df)
-clean_data.reviewed1 = clean_data.reviewed1.apply(' '.join)
-clean_data['reviewed1_lemmatized'] = clean_data.reviewed1.apply(get_lemmatize)
+data = ReviewProcessing(df)
+data.reviewed1 = data.reviewed1.apply(' '.join)
+data['reviewed1_lemmatized'] = data.reviewed1.apply(get_lemmatize)
 
 print(df.head())
 
@@ -86,17 +86,13 @@ sgd = Pipeline([('vect', CountVectorizer(ngram_range=(1, 2))),
                ])
 
 
-logreg = Pipeline([('vect', CountVectorizer(ngram_range=(1, 2))),
-                               ('tfidf', TfidfTransformer()),
-                               ('clf', LogisticRegression(max_iter=300)),
-                              ])
 tree2 = Pipeline([('vect', CountVectorizer(ngram_range=(1, 2))),
                                ('tfidf', TfidfTransformer()),
                                ('clf', DecisionTreeClassifier()),
                               ])
 
-x = clean_data['reviewed1_lemmatized']
-y = clean_data['Class']
+x = data['reviewed1_lemmatized']
+y = data['Class']
 X_train, X_test, y_train, y_test = train_test_split(x, y,test_size=0.2, random_state = 44)
 
 print("MultinomialNB")
@@ -116,12 +112,6 @@ print(classification_report(y_test, y_pred_sgd))
 
 
 
-print("Logistic Regression")
-logreg.fit(X_train, y_train)
-y_pred_log = logreg.predict(X_test)
-print(accuracy_score(y_test, y_pred_log))
-print(confusion_matrix(y_test, y_pred_log))
-print(classification_report(y_test, y_pred_log))
 
 
 knn = Pipeline([('vect', CountVectorizer(ngram_range=(1, 2))),
