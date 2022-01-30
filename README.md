@@ -11,3 +11,4 @@ numpy
 matplotlib.pyplot 
 seaborn 
 sklearn
+string
